@@ -2,6 +2,7 @@ package com.kosh.fullstack.controllers;
 
 import com.kosh.fullstack.entities.User;
 import com.kosh.fullstack.repository.UserRepository;
+import com.kosh.fullstack.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,45 +13,35 @@ import java.util.Optional;
 @RequestMapping("api/v1/users")
 public class UserController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @Autowired
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return userService.findAll();
     }
 
     @PostMapping
     public User createUser(@RequestBody User newUser){
-        return userRepository.save(newUser);
+        return userService.save(newUser);
     }
 
     @GetMapping("api/v1/{userId}")
     public User getUser (@PathVariable Long userId){
-        return userRepository.findById(userId).orElse(null);
+        return userService.findById(userId).orElse(null);
     }
 
     @PutMapping("api/v1/{userId}")
     public User updateUser(@PathVariable Long userId, @RequestBody User updatedUser){
-        Optional<User> foundedUser = userRepository.findById(userId);
-
-        if(foundedUser.isPresent()){
-            User user = foundedUser.get();
-            user.setUsername(updatedUser.getUsername());
-            user.setPassword(updatedUser.getPassword());
-            userRepository.save(user);
-            return updatedUser;
-        }
-
-        return null;
+        return userService.updateUser(userId, updatedUser);
     }
 
     @DeleteMapping("api/v1/{userId}")
     public void deleteUser(@PathVariable Long userId){
-        userRepository.deleteById(userId);
+        userService.deleteById(userId);
     }
 }
