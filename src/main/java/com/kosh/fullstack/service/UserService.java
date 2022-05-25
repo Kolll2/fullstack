@@ -5,7 +5,6 @@ import com.kosh.fullstack.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -24,8 +23,8 @@ public class UserService {
         return userRepository.save(newUser);
     }
 
-    public Optional<User> findById(Long userId) {
-        return userRepository.findById(userId);
+    public User findById(Long userId) {
+        return userRepository.findById(userId).orElse(null);
     }
 
     public void deleteById(Long userId) {
@@ -33,14 +32,11 @@ public class UserService {
     }
 
     public User updateUser(Long userId, User updatedUser) {
-        Optional<User> foundedUser = findById(userId);
-        if(foundedUser.isPresent()){
-            User user = foundedUser.get();
-            user.setUsername(updatedUser.getUsername());
-            user.setPassword(updatedUser.getPassword());
-            save(user);
-            return updatedUser;
-        }
-        return null;
+        User foundedUser = findById(userId);
+        if (foundedUser == null) return null;
+        foundedUser.setUsername(updatedUser.getUsername());
+        foundedUser.setPassword(updatedUser.getPassword());
+        save(foundedUser);
+        return updatedUser;
     }
 }

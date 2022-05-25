@@ -32,7 +32,7 @@ public class UserController {
 
     @GetMapping("api/v1/{userId}")
     public User getUser (@PathVariable Long userId){
-        return userService.findById(userId).orElse(null);
+        return userService.findById(userId);
     }
 
     @PutMapping("api/v1/{userId}")

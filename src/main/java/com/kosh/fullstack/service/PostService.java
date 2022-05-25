@@ -35,13 +35,13 @@ public class PostService {
     }
 
     public Post createPost(CreatePostDto newPost) {
-        Optional<User> user = userService.findById(newPost.getUserId());
-        if (user.isEmpty()) return null;
+        User user = userService.findById(newPost.getUserId());
+        if (user == null) return null;
 
         Post post = new Post();
         post.setText(newPost.getText());
         post.setTitle(newPost.getTitle());
-        post.setUser(user.get());
+        post.setUser(user);
         return postRepository.save(post);
     }
 
@@ -51,7 +51,7 @@ public class PostService {
 
     public Post updatePostById(Long postId, UpdatePostDto updatedPost) {
         Optional<Post> optionalPost = postRepository.findById(postId);
-        if(optionalPost.isEmpty()){
+        if (optionalPost.isEmpty()) {
             //todo add custom 404 exception
             return null;
         }
