@@ -6,13 +6,15 @@ import User from "./components/User/User";
 
 function App() {
     return (
-        <BrowserRouter>
-            <Navbar></Navbar>
-            <Routes>
-                <Route exact path="/" element={<Home/>}/>
-                <Route exact path="users/:userId" element={<User/>}/>
-            </Routes>
-        </BrowserRouter>
+        <div className="App">
+            <BrowserRouter>
+                <Navbar></Navbar>
+                <Routes>
+                    <Route exact path="/" element={<Home/>}/>
+                    <Route exact path="users/:userId" element={<User/>}/>
+                </Routes>
+            </BrowserRouter>
+        </div>
     );
 }
 

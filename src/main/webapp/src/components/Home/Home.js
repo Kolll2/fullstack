@@ -1,11 +1,24 @@
 import React, {useEffect, useState} from "react";
 import Post from '../Post/Post';
-import "./Home.scss";
+import {Container} from "@mui/material";
+import {makeStyles} from '@mui/styles';
+
+const useStyles = makeStyles((theme) => ({
+    container: {
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: '#cfe8fc',
+        height: '100vh'
+    }
+}))
 
 function Home() {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [postList, setPostList] = useState([]);
+    const classes = useStyles();
 
     useEffect(() => {
         fetch("api/v1/posts")
@@ -29,13 +42,11 @@ function Home() {
         return <div> Loading... </div>;
     } else {
         return (
-
-            <div className="container">
-                Home!!!
+            <Container fixed className={classes.container}>
                 {postList.map(post => (
                     <Post title={post.title} text={post.text} key={post.id}></Post>
                 ))}
-            </div>
+            </Container>
         );
     }
 }
